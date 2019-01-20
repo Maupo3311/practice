@@ -1,0 +1,50 @@
+#header{
+	margin-top: 10px;
+	text-align: center;
+	font-size: 40px;
+}
+#formRegistration{
+	width: 333.3px;
+	margin: 0 auto;
+}
+.textForm{
+	margin: 0;
+}
+.RegistrationInputText{
+	width: 315px;
+	height: 40px;
+	margin: 5px 0;
+	padding: 0 15px;
+	font-size: 22px;
+	background: rgba(233, 255, 0, 0.26);
+}
+#formRegistration div{
+	margin: 5px 69px;
+}
+.RegistrationInputRadio{
+	margin: 0 10px
+}
+.RegistrationSubmit:hover{
+	cursor: pointer;
+	background: rgba(233, 255, 0, 0.26);
+}
+.RegistrationSubmit{
+	display: block;
+	width: 300px;
+	height: 40px;
+	margin: 20px auto;
+	border-radius: 16px;
+	background: rgba(255, 255, 0, 0.05);
+	outline: none;
+}
+#divErrorNotification{
+	position: absolute;
+	margin: -686px 700px;
+	font-size: 17px;
+	color: #b70303;
+}
+.errorsNotification{
+	margin: 32px 0;
+	height: 40px;
+	width: 300px;
+}

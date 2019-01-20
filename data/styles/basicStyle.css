@@ -1,0 +1,35 @@
+body{
+	background: url(../images/17599833.jpg)
+}
+#upperBand {
+	width: 100%;
+	text-align: center;
+	background: rgba(255, 254, 91, 0.7);
+	height: 40px;
+}
+#upperBand #mainDivUpperBand{
+	width: 1000px;
+	height: 40px;
+	margin: 0 auto;
+}
+#window {
+	margin: 10px auto;
+	width: 1000px;
+	height: 900px;
+	border: 3px solid rgba(162, 162, 56, 0.69);
+	background: #e4e2e2;
+	border-radius: 2px;
+}
+.aButton:hover{
+    background: rgba(243, 245, 124, 0.48);
+}
+.aButton{
+    text-decoration: none;
+}
+#exitButton{
+    margin: 9px 410px;
+    position: absolute;
+    height: 20px;
+    width: 100px;
+    border-radius: 20px;
+}
