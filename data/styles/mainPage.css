@@ -4,7 +4,9 @@
     background: rgba(220, 247, 167, 0.12);
     margin: 10px;
     border-radius: 4px;
-    display: inline-block
+    display: inline-block;
+	overflow: hidden;
+	border: 5px solid black;
 }
 #userData{
     width: 700px;

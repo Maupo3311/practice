@@ -33,3 +33,30 @@ body{
     width: 100px;
     border-radius: 20px;
 }
+#windowZoomImage{
+	border: 10px solid #636363;
+	background: #757575;
+	position: fixed;
+	display: none;
+	background: rgb(99, 99, 99);
+	z-index: 9999;
+}
+#closeWindowZoomImage:hover{
+	background: rgba(255, 0, 0, 0.15);
+	cursor: pointer;
+}
+#closeWindowZoomImage{
+	right: 0;
+	outline: none;
+	border-radius: 15px;
+	background: rgba(255, 0, 0, 0);
+	color: red;
+	position: absolute;
+}
+.arrow{
+	top: 40px;
+	position: absolute;
+}
+#backward{
+	right: 0;
+}

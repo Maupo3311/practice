@@ -35,7 +35,8 @@
 			</div>
 		</div>
 		<div id='window'>
-			<div id='avatarWindow'><img id='avatar' src='data/userImages/noAvatar.png'></div>
+			<div id='avatarWindow'><img id='avatar' src='<?= autoAvatar($link, $fullDataUser) ?>'></div>
+			<script> processingPhoto(<?= json_encode(processingPhoto($_SESSION['mainAvatarPatch'], 250))?>, 250, 'avatar', 'cropping') </script>
 			<div id='userData'>
 				<h1 id='fullNameUser'><?= "$fullDataUser[name] $fullDataUser[surname]" ?></h1>
 				<p class='additionalData'>Город: <?= "$fullDataUser[city]" ?></p>

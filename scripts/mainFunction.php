@@ -24,4 +24,25 @@
 		
 		return ['cropping'=>$imageSizeArrayCropping, 'stretching'=>$imageSizeArrayStretching];
 	}
-?>
+	
+	function autoAvatar($link, $fullUserData){
+		$id = $fullUserData['id'];
+		$avatar = $fullUserData['avatar'];
+		if(empty($avatar)){
+			return "data/userImages/noAvatar.png";
+			$_SESSION['mainAvatarPatch'] = "data/userImages/noAvatar.png";
+		} else if(!empty($avatar) && !file_exists("data/userImages/$id/$avatar")){
+			$query = "UPDATE users SET avatar = '', WHERE id = '$id'";
+			mysqli_query($link, $query);
+			$_SESSION['mainAvatarPatch'] = "data/userImages/noAvatar.png";
+			return "data/userImages/noAvatar.png";
+		} else {
+			$_SESSION['mainAvatarPatch'] = "data/userImages/$id/$avatar";
+			return "data/userImages/$id/$avatar";
+		}
+	}
+
+
+
+
+
