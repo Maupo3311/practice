@@ -36,27 +36,18 @@ body{
 #windowZoomImage{
 	border: 10px solid #636363;
 	background: #757575;
-	position: fixed;
-	display: none;
-	background: rgb(99, 99, 99);
 	z-index: 9999;
+	position: fixed;
 }
 #closeWindowZoomImage:hover{
-	background: rgba(255, 0, 0, 0.15);
 	cursor: pointer;
 }
 #closeWindowZoomImage{
-	right: 0;
-	outline: none;
-	border-radius: 15px;
-	background: rgba(255, 0, 0, 0);
-	color: red;
-	position: absolute;
+	background: rgba(0, 0, 0, 0.6);
+	position: fixed;
+	left: 0;
+	top: 0;
 }
 .arrow{
-	top: 40px;
 	position: absolute;
-}
-#backward{
-	right: 0;
 }

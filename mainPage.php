@@ -25,6 +25,7 @@
 					$('#buttonForBlockOutput').css({'display': 'block'});
 					$('#shareTheNews').css({'display': 'none'});
 				})
+				$("img").click(function(){ zoomImage(this, document.body) });
 			})
 		</script>
 	</head>

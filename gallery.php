@@ -55,17 +55,12 @@
 						}
 					}
 				)
+				$("img").click(function(){ zoomImage(this, document.body) }); 
 				pageFit('miniImageWindow', window.pageYOffset);
 			})
 		</script>
 	</head>
 	<body>
-		<div id='windowZoomImage'>
-			<input id='closeWindowZoomImage' type='button' value='X'>
-			<div class='arrow' id='backward'></div>
-			<div class='arrow' id='next'></div>
-			<img id='zoomImage'>
-		</div>
 		<div id='upperBand'>
 			<div id='mainDivUpperBand'>
 				<a href='?exit' class='aButton' id='exitButton'>Выйти</a>

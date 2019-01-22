@@ -26,13 +26,114 @@ function pageFit(elemClass, currentScroll){
 	}
 }
 
-function zoomImage(image, windowZoomImage, closeWindowZoomImage, zoomImage){
+function zoomImage(image, body){
 	var imageHeight = image.offsetHeight;
 	var imageWidth = image.offsetWidth;
-	alert(closeWindowZoomImage.offsetWidth);
-	//windowZoomImage.style.display = 'fixed';
+	
+	var closeWindowZoomImage = document.createElement('div');
+	closeWindowZoomImage.id = 'closeWindowZoomImage';
+	closeWindowZoomImage.style.width = document.documentElement.clientWidth + 'px';
+	closeWindowZoomImage.style.height = document.documentElement.clientHeight + 'px';
+	body.appendChild(closeWindowZoomImage);
+	closeWindowZoomImage.setAttribute('onclick', 'closeWindowZoomImage(event ,this)');
+	
+	var windowZoomImage = document.createElement('div');
+	windowZoomImage.id = 'windowZoomImage';
+	if(document.documentElement.clientHeight < 900) {
+		var windowZoomImageSize = document.documentElement.clientHeight + 'px';
+	} else {
+		var windowZoomImageSize = '900px';
+	}
+	windowZoomImage.style.width = windowZoomImageSize;
+	windowZoomImage.style.height = windowZoomImageSize;
+	windowZoomImageWidth = windowZoomImage.style.width.slice(0, -2);
+	windowZoomImageHeight = windowZoomImage.style.height.slice(0, -2);
+	windowZoomImage.style.left = (document.documentElement.clientWidth - windowZoomImageWidth) / 2 + 'px';
+	windowZoomImage.style.top = (document.documentElement.clientHeight - windowZoomImageHeight) / 2 + 'px';
+	if(windowZoomImage.style.left.slice(0, -2) < 0) windowZoomImage.style.left = '0px';
+	if(windowZoomImage.style.top.slice(0, -2) < 0) windowZoomImage.style.top = '0px';
+	closeWindowZoomImage.appendChild(windowZoomImage);
+	
+	var nextImageArrow = document.createElement('div');
+	nextImageArrow.setAttribute('class', 'arrow');
+	nextImageArrow.id = 'next';
+	nextImageArrow.style.width = windowZoomImageWidth / 2 + 'px';
+	nextImageArrow.style.height = windowZoomImageHeight + 'px';
+	nextImageArrow.style.right = '0';
+	windowZoomImage.appendChild(nextImageArrow);
+	
+	var backwarImageArrow = document.createElement('div');
+	backwarImageArrow.setAttribute('class', 'arrow');
+	backwarImageArrow.id = 'backwar';
+	backwarImageArrow.style.width = windowZoomImageWidth / 2 + 'px';
+	backwarImageArrow.style.height = windowZoomImageHeight + 'px';
+	backwarImageArrow.style.left = '0';
+	windowZoomImage.appendChild(backwarImageArrow);
+	
+	var zoomImage = document.createElement('img');
+	zoomImage.id = 'zoomImage';
+	zoomImage.src = image.src;
+	zoomImage.setAttribute('data-className', image.className);
+	windowZoomImage.appendChild(zoomImage);
+	
+	if(imageWidth > imageHeight){
+		var aspectRatio = windowZoomImageWidth / imageWidth;
+		var minSize = 'height';
+	} else {
+		var aspectRatio = windowZoomImageHeight / imageHeight;
+		var minSize = 'width';
+	}
+	
+	zoomImage.style.width = image.style.width.slice(0, -2) * aspectRatio + 'px';
+	zoomImage.style.height = image.style.height.slice(0, -2) * aspectRatio + 'px';
+	if(minSize == 'height'){
+		var zoomImageMarginTop = (windowZoomImageHeight - zoomImage.style.height.slice(0, -2)) / 2 + 'px';
+		var zoomImageMarginLeft = ' 0px';
+	} else {
+		var zoomImageMarginTop = '0px ';
+		var zoomImageMarginLeft = (windowZoomImageWidth - zoomImage.style.width.slice(0, -2)) / 2 + 'px';
+	}
+	zoomImage.style.margin = zoomImageMarginTop + zoomImageMarginLeft;
+	
 }
-
+function closeWindowZoomImage(event ,div){
+	var target = event.target;
+	if(target.className == 'arrow'){
+		var image = target.parentNode.lastChild;
+		var imageClass = image.getAttribute('data-className');
+		var imageArray = document.getElementsByClassName(imageClass);
+		
+		var keyCurrentImage;
+		for(let count = 0; count < imageArray.length; ++count){
+			if(imageArray[count].src == image.src){
+				keyCurrentImage = count;
+				break;
+			}
+		}
+		if(keyCurrentImage == undefined || keyCurrentImage == 0 || keyCurrentImage == imageArray.length - 1) return;
+		
+		if(target.id == 'next'){
+			image.src = imageArray[++keyCurrentImage].src;
+		} else if(target.id == 'backwar'){
+			image.src = imageArray[--keyCurrentImage].src;
+		}
+		
+		var newSizeWidthImage = imageArray[keyCurrentImage].style.width;
+		var newSizeHeightImage = imageArray[keyCurrentImage].style.height;
+		var windowZoomImage = image.parentNode;
+		if(newSizeWidthImage > newSizeHeightImage){
+			image.style.width = windowZoomImage.style.width;
+			image.style.height = null;
+			image.style.margin = (windowZoomImage.offsetHeight - image.offsetHeight) / 2 + 'px 0';
+		} else {
+			image.style.width = null;
+			image.style.height = windowZoomImage.style.height;
+			image.style.margin = '0 ' + (windowZoomImage.offsetWidth - image.offsetWidth) / 2 + 'px';
+		}
+	}
+	
+	if(target == div) div.remove();
+}
 
 
 
