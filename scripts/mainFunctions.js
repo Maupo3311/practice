@@ -110,11 +110,12 @@ function closeWindowZoomImage(event ,div){
 				break;
 			}
 		}
-		if(keyCurrentImage == undefined || keyCurrentImage == 0 || keyCurrentImage == imageArray.length - 1) return;
 		
 		if(target.id == 'next'){
+			if(keyCurrentImage == imageArray.length - 1) return;
 			image.src = imageArray[++keyCurrentImage].src;
 		} else if(target.id == 'backwar'){
+			if(keyCurrentImage == 0) return;
 			image.src = imageArray[--keyCurrentImage].src;
 		}
 		
