@@ -1,4 +1,4 @@
-function processingPhoto(imageSize, divSize, imageId, method){
+function processingPhoto(imageSize, divSize, imageId, method, AdditionalDimension = 0){
 	var width = imageSize[method][0];
 	var height = imageSize[method][1];
 	var image = document.getElementById(imageId);
@@ -9,20 +9,25 @@ function processingPhoto(imageSize, divSize, imageId, method){
 		} else {
 			image.style.margin = -(width - divSize) / 2 + 'px 0';
 		}
+	} else {
+		if(height > width){
+			image.style.margin = '0 5px';
+		} else {
+			image.style.margin = -(width - divSize) / 2 + 'px 3px';
+		}
 	}
 	image.style.width = width + 'px';
 	image.style.height = height + 'px';
 }
-
-function pageFit(elemClass, currentScroll){
+function pageFit(elemClass, currentScroll, minus = 30){
 	var window = document.getElementById('window');
 	var windowButtomCoords = window.getBoundingClientRect()['bottom'] + currentScroll;
 	var arrayElements = document.getElementsByClassName(elemClass);
+	if(arrayElements[0] == undefined) return;
 	var lastElementSize = arrayElements[0].offsetHeight;
 	var lastElementBottomCoords = arrayElements[arrayElements.length - 1].getBoundingClientRect()['bottom'] + currentScroll;
-	
-	if(lastElementBottomCoords > windowButtomCoords){
-		window.style.height = lastElementBottomCoords + 'px';
+	if(lastElementBottomCoords > 900){
+		window.style.height = lastElementBottomCoords - minus + 'px';
 	}
 }
 
@@ -32,18 +37,14 @@ function zoomImage(image, body){
 	
 	var closeWindowZoomImage = document.createElement('div');
 	closeWindowZoomImage.id = 'closeWindowZoomImage';
-	closeWindowZoomImage.style.width = document.documentElement.clientWidth + 'px';
-	closeWindowZoomImage.style.height = document.documentElement.clientHeight + 'px';
+	closeWindowZoomImage.style.width = '100%';
+	closeWindowZoomImage.style.height = '100%';
 	body.appendChild(closeWindowZoomImage);
 	closeWindowZoomImage.setAttribute('onclick', 'closeWindowZoomImage(event ,this)');
 	
 	var windowZoomImage = document.createElement('div');
 	windowZoomImage.id = 'windowZoomImage';
-	if(document.documentElement.clientHeight < 900) {
-		var windowZoomImageSize = document.documentElement.clientHeight + 'px';
-	} else {
-		var windowZoomImageSize = '900px';
-	}
+	var windowZoomImageSize = '900px';
 	windowZoomImage.style.width = windowZoomImageSize;
 	windowZoomImage.style.height = windowZoomImageSize;
 	windowZoomImageWidth = windowZoomImage.style.width.slice(0, -2);
@@ -110,7 +111,7 @@ function closeWindowZoomImage(event ,div){
 				break;
 			}
 		}
-		
+		if(keyCurrentImage == undefined) return
 		if(target.id == 'next'){
 			if(keyCurrentImage == imageArray.length - 1) return;
 			image.src = imageArray[++keyCurrentImage].src;

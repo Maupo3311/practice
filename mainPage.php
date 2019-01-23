@@ -4,9 +4,29 @@
 	
 	$query = "SELECT * FROM users WHERE id = '$id'";
 	$result = mysqli_query($link, $query);
-	for($fullDataUser = []; $row = mysqli_fetch_assoc($result); $fullDataUser[] = $row);
-	$fullDataUser = $fullDataUser[0];
+	for($fullDataUser = []; $row = mysqli_fetch_assoc($result); $fullDataUser = $row);
 	
+	$query = "SELECT * FROM newses WHERE userId = '$id'";
+	$result = mysqli_query($link, $query);
+	for($fullDataNewsesUser = []; $row = mysqli_fetch_assoc($result); $fullDataNewsesUser[] = $row);
+	
+	if(!empty($_POST['textNewNews']) ){
+		if(!empty($_FILES['attachedFile']['name'])){
+			if(!file_exists("data/userImages/$id/userNewsImages")) mkdir("data/userImages/$id/userNewsImages");
+			copy($_FILES['attachedFile']['tmp_name'], "data/userImages/$id/userNewsImages/".basename($_FILES['attachedFile']['name']));
+			$attachedFileName = $_FILES['attachedFile']['name'];
+		}
+		
+		$query = "INSERT INTO newses (text, userId, idOfTheSender, attachedFile ) VALUES ('$_POST[textNewNews]', '$id', '$_COOKIE[userId]', '$attachedFileName')";
+		mysqli_query($link, $query);
+		$url = strtok($_SERVER['REQUEST_URI'], '?');
+		header("Location: $url"); exit();
+	} else if(isset($_POST['deleteNews'])){
+		$query = "DELETE FROM newses WHERE id = '$_POST[deleteNews]'";
+		mysqli_query($link, $query);
+		$url = strtok($_SERVER['REQUEST_URI'], '?');
+		header("Location: $url"); exit();
+	}
 ?>
 <!DOCTYPE html>
 <html>
@@ -17,15 +37,28 @@
 		<title>Practice</title>
 		<script>
 			$(document).ready(function(){
+				$(document).click(function(event){
+					var target = event.target;
+					if(target.id != 'shareTheNews' && target.class != 'newsButton' && target.id != 'buttonForBlockOutput' && target.getAttribute('type') != 'file'){
+						$('#buttonForBlockOutput').css({'display': 'block'});
+						$('#formShareTheNews').css({'display': 'none'});
+						
+						pageFit('newsBlock', window.pageYOffset);
+					}
+				})
 				$('#buttonForBlockOutput').click(function(){
 					$('#buttonForBlockOutput').css({'display': 'none'});
-					$('#shareTheNews').css({'display': 'block'});
+					$('#formShareTheNews').css({'display': 'block'});
+					pageFit('newsBlock', window.pageYOffset);
 				})
-				$('#shareTheNews').blur(function(){
-					$('#buttonForBlockOutput').css({'display': 'block'});
-					$('#shareTheNews').css({'display': 'none'});
+				$('#showFileInput').toggle(function(){
+					$('#fileInput').css('display', 'block');
+					$('#showFileInput').attr('value', 'Отмена');}, function(){
+					$('#fileInput').css('display', 'none');
+					$('#showFileInput').attr('value', 'Прикрепить');
 				})
 				$("img").click(function(){ zoomImage(this, document.body) });
+				pageFit('newsBlock', window.pageYOffset);
 			})
 		</script>
 	</head>
@@ -44,11 +77,51 @@
 				<p class='additionalData'>Возраст: <?= "$fullDataUser[age]" ?></p>
 			</div>
 			<div id='userMenu'>
-				<a href='?gallery' class='aButton'>Изображения</a>
+				<a href='?friends' class='aButton'><div class='menuButton'>Друзья</div></a>
+				<a href='?gallery' class='aButton'><div class='menuButton'>Фотографии</div></a>
 			</div>
 			<div id='newsWindow'>
 				<div id='buttonForBlockOutput'>Поделиться записью</div>
-				<textarea id='shareTheNews'></textarea>
+				<form id='formShareTheNews' method='POST' enctype='multipart/form-data'>
+					<textarea id='shareTheNews' name='textNewNews'></textarea>
+					<input type='button' class='newsButton' id='showFileInput' value='Прикрепить'>
+					<input type='submit' name='newNews' id='sendNewNews' class='newsButton'>
+					<input type='file' name='attachedFile' class='newsButton' id='fileInput'>
+				</form>
+				<?php
+					$idImage = 0;
+					foreach($fullDataNewsesUser as $news){
+						$query = "SELECT * FROM users WHERE id = '$news[idOfTheSender]'";
+						$result = mysqli_query($link, $query);
+						for($dataOfTheSender = []; $row = mysqli_fetch_assoc($result); $dataOfTheSender = $row);
+						$avatarPutch = autoAvatar($link, $dataOfTheSender);
+						
+						$idImageNews = 'imageNews'.$idImage;
+						$idavatarSender = 'avatarSender'.$idImage;
+						
+						$result = '';
+						$result .= "<div class='newsBlock'>";
+						$result .= "<form method='POST' class='settingUpNews'>
+							<button type='submit' class='deleteNews' name='deleteNews' value='$news[id]'>X</button>
+						</form>";
+						$result .= "<div class='theDataSender'>
+							<div class='windowAvatarSender'><img id='$idavatarSender' src='$avatarPutch'></div>
+							<p class='theFullNameSender'>$dataOfTheSender[name] $dataOfTheSender[surname]</p>
+						</div>";
+						if(!empty($news['text'])) $result .= "<p class='newsText'>$news[text]</p>";
+						if(!empty($news['attachedFile'])){ $result .= "<div class='newsWindowImage'>
+							<img id='$idImageNews' src='data/userImages/$news[userId]/userNewsImages/$news[attachedFile]' class='newsImage'>
+						</div>";
+						}
+						$result .= "</div>";
+						echo $result;
+						?> <script> <?php if(!empty($news['attachedFile'])){ ?>
+						processingPhoto(<?= json_encode(processingPhoto("data/userImages/$news[userId]/userNewsImages/$news[attachedFile]", 550))?>, 550, '<?= $idImageNews ?>', 'stretching'); <?php } ?>
+						processingPhoto(<?= json_encode(processingPhoto($avatarPutch, 65))?>, 65, '<?= $idavatarSender ?>', 'cropping');
+						</script> <?php
+						$idImage++;
+					}
+				?>
 			</div>
 		</div>
 	</body>

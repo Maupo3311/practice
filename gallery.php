@@ -1,6 +1,11 @@
 <?php
 	$mainFilePutch = "data/userImages/$_COOKIE[userId]";
 	$arrayUserImages = array_slice(scandir($mainFilePutch), 2);
+	$newArrayUserImage = [];
+	foreach($arrayUserImages as $elem){
+		if($elem == 'userNewsImages') continue;
+		$newArrayUserImage[] = $elem;
+	}
 
 	if(isset($_POST['loadImage'])){
 		if(!file_exists("$mainFilePutch")){
@@ -79,7 +84,7 @@
 			<div id='imageWindow'>
 				<?php
 					$count = 0;
-					foreach($arrayUserImages as $image){
+					foreach($newArrayUserImage as $image){
 						$imagePutch = "$mainFilePutch/$image";
 						echo "<div class='miniImageWindow'>
 							<a class='aImage' data-nameImage='$image'><img class='miniImage' src='$imagePutch' id='$count'></a>

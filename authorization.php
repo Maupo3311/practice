@@ -9,7 +9,7 @@
 		
 		if(!empty($data)){
 			if($data[0]['password'] == $password){
-				setcookie('userId', $data[0]['id']);
+				setcookie('userId', $data[0]['id'], time() + 3600);
 				$url = strtok($_SERVER['REQUEST_URI'], '?');
 				header("Location: $url"); exit();
 			} else {
