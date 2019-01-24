@@ -34,7 +34,7 @@ body{
     border-radius: 20px;
 }
 #windowZoomImage{
-	border: 10px solid #636363;
+	border: 10px solid #757575;;
 	background: #757575;
 	z-index: 9999;
 	position: fixed;

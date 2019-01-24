@@ -1,6 +1,16 @@
 <?php
-
-	$id = $_COOKIE['userId'];
+	if($_SESSION['contactId'] == $_COOKIE['userId']){
+		$id = $_COOKIE['userId'];
+		$itPage = 'user';
+		$_SESSION['contactId'] = '';
+	} else if(!empty($_SESSION['contactId'])){
+		$id = $_SESSION['contactId'];
+		$itPage = 'contact';
+	} else {
+		$id = $_COOKIE['userId'];
+		$itPage = 'user';
+	}
+	
 	
 	$query = "SELECT * FROM users WHERE id = '$id'";
 	$result = mysqli_query($link, $query);
@@ -9,9 +19,11 @@
 	$query = "SELECT * FROM newses WHERE userId = '$id'";
 	$result = mysqli_query($link, $query);
 	for($fullDataNewsesUser = []; $row = mysqli_fetch_assoc($result); $fullDataNewsesUser[] = $row);
+	$fullDataNewsesUser = array_reverse($fullDataNewsesUser);
 	
 	if(!empty($_POST['textNewNews']) ){
 		if(!empty($_FILES['attachedFile']['name'])){
+			if(!file_exists("data/userImages/$id")) mkdir("data/userImages/$id");
 			if(!file_exists("data/userImages/$id/userNewsImages")) mkdir("data/userImages/$id/userNewsImages");
 			copy($_FILES['attachedFile']['tmp_name'], "data/userImages/$id/userNewsImages/".basename($_FILES['attachedFile']['name']));
 			$attachedFileName = $_FILES['attachedFile']['name'];
@@ -70,13 +82,14 @@
 		</div>
 		<div id='window'>
 			<div id='avatarWindow'><img id='avatar' src='<?= autoAvatar($link, $fullDataUser) ?>'></div>
-			<script> processingPhoto(<?= json_encode(processingPhoto($_SESSION['mainAvatarPatch'], 250))?>, 250, 'avatar', 'cropping') </script>
+			<script> processingPhoto(<?= json_encode(processingPhoto(autoAvatar($link, $fullDataUser), 250))?>, 250, 'avatar', 'cropping') </script>
 			<div id='userData'>
 				<h1 id='fullNameUser'><?= "$fullDataUser[name] $fullDataUser[surname]" ?></h1>
 				<p class='additionalData'>Город: <?= "$fullDataUser[city]" ?></p>
 				<p class='additionalData'>Возраст: <?= "$fullDataUser[age]" ?></p>
 			</div>
 			<div id='userMenu'>
+				<a href='?mainPage' class='aButton'><div class='menuButton'>Моя страница</div></a>
 				<a href='?friends' class='aButton'><div class='menuButton'>Друзья</div></a>
 				<a href='?gallery' class='aButton'><div class='menuButton'>Фотографии</div></a>
 			</div>
@@ -85,7 +98,7 @@
 				<form id='formShareTheNews' method='POST' enctype='multipart/form-data'>
 					<textarea id='shareTheNews' name='textNewNews'></textarea>
 					<input type='button' class='newsButton' id='showFileInput' value='Прикрепить'>
-					<input type='submit' name='newNews' id='sendNewNews' class='newsButton'>
+					<input type='submit' name='newNews' id='sendNewNews' class='newsButton' value='Отправить'>
 					<input type='file' name='attachedFile' class='newsButton' id='fileInput'>
 				</form>
 				<?php
@@ -101,9 +114,11 @@
 						
 						$result = '';
 						$result .= "<div class='newsBlock'>";
-						$result .= "<form method='POST' class='settingUpNews'>
-							<button type='submit' class='deleteNews' name='deleteNews' value='$news[id]'>X</button>
-						</form>";
+						$result .= "<form method='POST' class='settingUpNews'>";
+						if($itPage == 'user' || $news['idOfTheSender'] == $_COOKIE['userId']){ 
+							$result .= "<button type='submit' class='deleteNews' name='deleteNews' value='$news[id]'>X</button>";
+						}
+						$result .= "</form>";
 						$result .= "<div class='theDataSender'>
 							<div class='windowAvatarSender'><img id='$idavatarSender' src='$avatarPutch'></div>
 							<p class='theFullNameSender'>$dataOfTheSender[name] $dataOfTheSender[surname]</p>

@@ -1,0 +1,28 @@
+#friendWindow{
+    width: 710px;
+    margin: -100px 280px;
+}
+.friendBlock:hover{
+	background: #f3f0c4;
+	cursor: pointer;
+}
+.friendBlock{
+    height: 100px;
+	background: #ebe9cd;
+    margin-top: 5px;
+    border-radius: 0 100px 100px 0;
+}
+.friendAvatarWindow{
+    position: absolute;
+    width: 98px;
+    height: 98px;
+    border: 1px solid black;
+    border-radius: 100px;
+    margin-left: 40px;
+	overflow: hidden;
+}
+.friendData{
+    position: absolute;
+    font-size: 30px;
+    margin: 5px 150px;
+}

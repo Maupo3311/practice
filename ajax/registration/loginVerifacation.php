@@ -1,5 +1,5 @@
 <?php
-	$link = mysqli_connect('practice', 'mysql', 'mysql', 'server');
+	$link = mysqli_connect('practice.local', 'mysql', 'mysql', 'server');
 	mysqli_query($link, "SET NAMES = 'UTF8'");
  
 	$login = $_REQUEST['login'];

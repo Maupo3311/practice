@@ -1,6 +1,23 @@
 <?php
-	$mainFilePutch = "data/userImages/$_COOKIE[userId]";
-	$arrayUserImages = array_slice(scandir($mainFilePutch), 2);
+	if($_SESSION['contactId'] == $_COOKIE['userId']){
+		$id = $_COOKIE['userId'];
+		$itPage = 'user';
+		$_SESSION['contactId'] = '';
+	} else if(!empty($_SESSION['contactId'])){
+		$id = $_SESSION['contactId'];
+		$itPage = 'contact';
+	} else {
+		$id = $_COOKIE['userId'];
+		$itPage = 'user';
+	}
+	
+
+	$mainFilePutch = "data/userImages/$id";
+	if(file_exists($mainFilePutch)){
+		$arrayUserImages = array_slice(scandir($mainFilePutch), 2);
+	} else {
+		$arrayUserImages = [];
+	}
 	$newArrayUserImage = [];
 	foreach($arrayUserImages as $elem){
 		if($elem == 'userNewsImages') continue;
@@ -22,7 +39,7 @@
 		header("Location: $url"); exit();
 	} else if(isset($_GET['newAvatar'])){
 		$newAvatar = $_GET['newAvatar'];
-		$query = "UPDATE users SET avatar = '$newAvatar' WHERE id = '$_COOKIE[userId]'";
+		$query = "UPDATE users SET avatar = '$newAvatar' WHERE id = '$id'";
 		mysqli_query($link, $query);
 		$_SESSION['page'] = '';
 		$url = strtok($_SERVER['REQUEST_URI'], '?');
@@ -73,12 +90,14 @@
 		</div>
 		<div id='window'>
 			<div id='menu'>
-				<input type='button' class='menuButton' id='showFormLoadImage' value='Загрузить фотографию'>
-				<form method='POST' enctype='multipart/form-data' id='formLoadImage'>
-					<input type='file' name='newImage'>
-					<input type='submit' name='loadImage' value='Загрузить'>
-				</form>
-				<input type='button' class='menuButton' id='newAvatarButton' value='Выбрать новый аватар'>
+				<?php if($itPage == 'user'){?>
+					<input type='button' class='menuButton' id='showFormLoadImage' value='Загрузить фотографию'>
+					<form method='POST' enctype='multipart/form-data' id='formLoadImage'>
+						<input type='file' name='newImage'>
+						<input type='submit' name='loadImage' value='Загрузить'>
+					</form>
+					<input type='button' class='menuButton' id='newAvatarButton' value='Выбрать новый аватар'>
+				<?php } ?>
 				<a href='?backward'><input type='button' class='menuButton' id='' value='Назад'></a>
 			</div>
 			<div id='imageWindow'>

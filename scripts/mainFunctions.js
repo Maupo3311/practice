@@ -34,6 +34,7 @@ function pageFit(elemClass, currentScroll, minus = 30){
 function zoomImage(image, body){
 	var imageHeight = image.offsetHeight;
 	var imageWidth = image.offsetWidth;
+	if(image.src.slice(-12) == 'noAvatar.png') return;
 	
 	var closeWindowZoomImage = document.createElement('div');
 	closeWindowZoomImage.id = 'closeWindowZoomImage';
@@ -44,7 +45,11 @@ function zoomImage(image, body){
 	
 	var windowZoomImage = document.createElement('div');
 	windowZoomImage.id = 'windowZoomImage';
-	var windowZoomImageSize = '900px';
+	if(document.documentElement.clientHeight < 900){
+		var windowZoomImageSize = document.documentElement.clientHeight + 'px';
+	} else {
+		var windowZoomImageSize = '900px';
+	}
 	windowZoomImage.style.width = windowZoomImageSize;
 	windowZoomImage.style.height = windowZoomImageSize;
 	windowZoomImageWidth = windowZoomImage.style.width.slice(0, -2);

@@ -13,7 +13,7 @@
 		private $registrationDate;
 		
 		public function setLogin($login){
-			$link = mysqli_connect('practice', 'mysql', 'mysql', 'server');
+			$link = mysqli_connect('practice.local', 'mysql', 'mysql', 'server');
 			mysqli_query($link, "SET NAMES = 'UTF8'");
 			$query = "SELECT login FROM users WHERE login = '$login'";
 			$result = mysqli_query($link, $query);
