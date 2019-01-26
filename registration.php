@@ -152,3 +152,40 @@
 			</div>
 		</div>
 	</body>
+	
+	<?php/*
+					$idImage = 0;
+					foreach($fullDataNewsesUser as $news){
+						$query = "SELECT * FROM users WHERE id = '$news[idOfTheSender]'";
+						$result = mysqli_query($link, $query);
+						for($dataOfTheSender = []; $row = mysqli_fetch_assoc($result); $dataOfTheSender = $row);
+						$avatarPutch = autoAvatar($link, $dataOfTheSender);
+						
+						$idImageNews = 'imageNews'.$idImage;
+						$idavatarSender = 'avatarSender'.$idImage;
+						
+						$result = '';
+						$result .= "<div class='newsBlock'>";
+						$result .= "<form method='POST' class='settingUpNews'>";
+						if($itPage == 'user' || $news['idOfTheSender'] == $_COOKIE['userId']){ 
+							$result .= "<button type='submit' class='deleteNews' name='deleteNews' value='$news[id]'>X</button>";
+						}
+						$result .= "</form>";
+						$result .= "<div class='theDataSender'>
+							<a href='?contactId=$news[idOfTheSender]'><div class='windowAvatarSender'><img id='$idavatarSender' src='$avatarPutch'></div></a>
+							<a href='?contactId=$news[idOfTheSender]'><p class='theFullNameSender'>$dataOfTheSender[name] $dataOfTheSender[surname]</p></a>
+						</div>";
+						if(!empty($news['text'])) $result .= "<p class='newsText'>$news[text]</p>";
+						if(!empty($news['attachedFile'])){ $result .= "<div class='newsWindowImage'>
+							<img id='$idImageNews' src='data/userImages/$news[userId]/userNewsImages/$news[attachedFile]' class='newsImage'>
+						</div>";
+						}
+						$result .= "</div>";
+						echo $result;
+						?> <script> <?php if(!empty($news['attachedFile'])){ ?>
+						processingPhoto(<?= json_encode(processingPhoto("data/userImages/$news[userId]/userNewsImages/$news[attachedFile]", 550))?>, 550, '<?= $idImageNews ?>', 'stretching'); <?php } ?>
+						processingPhoto(<?= json_encode(processingPhoto($avatarPutch, 65))?>, 65, '<?= $idavatarSender ?>', 'cropping');
+						</script> <?php
+						$idImage++;
+					}*/
+				?>

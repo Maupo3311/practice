@@ -4,8 +4,13 @@ body{
 #upperBand {
 	width: 100%;
 	text-align: center;
-	background: rgba(255, 254, 91, 0.7);
-	height: 40px;
+	background: rgba(235, 233, 205, 0.94);
+	height: 37px;
+	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: 9998;
+	border: 1px solid black;
 }
 #upperBand #mainDivUpperBand{
 	width: 1000px;
@@ -13,7 +18,7 @@ body{
 	margin: 0 auto;
 }
 #window {
-	margin: 10px auto;
+	margin: 50px auto;
 	width: 1000px;
 	height: 900px;
 	border: 3px solid rgba(162, 162, 56, 0.69);
@@ -34,7 +39,7 @@ body{
     border-radius: 20px;
 }
 #windowZoomImage{
-	border: 10px solid #757575;;
+	border: 10px solid #757575;
 	background: #757575;
 	z-index: 9999;
 	position: fixed;

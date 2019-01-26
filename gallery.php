@@ -11,6 +11,9 @@
 		$itPage = 'user';
 	}
 	
+	$query = "SELECT * FROM users WHERE id = '$id'";
+	$result = mysqli_query($link, $query);
+	for($fullUserData = []; $row = mysqli_fetch_assoc($result); $fullUserData = $row);
 
 	$mainFilePutch = "data/userImages/$id";
 	if(file_exists($mainFilePutch)){
@@ -44,6 +47,10 @@
 		$_SESSION['page'] = '';
 		$url = strtok($_SERVER['REQUEST_URI'], '?');
 		header("Location: $url"); exit();
+	} else if(isset($_GET['deleteImage'])){
+		unlink("$mainFilePutch/$_GET[deleteImage]");
+		$url = strtok($_SERVER['REQUEST_URI'], '?');
+		header("Location: $url"); exit();
 	}
 ?>
 <!DOCTYPE html>
@@ -67,6 +74,7 @@
 						for(let count = 0; count < aImageArray.length; ++count){
 							aImageArray[count].href = '?newAvatar=' + aImageArray[count].getAttribute('data-nameImage');
 							$('#newAvatarButton').attr('value', 'Отменить выбор аватара');
+							$('#newAvatarButton').css('background', 'rgba(206, 221, 247, 0.89)');
 						}
 					}, 
 					function(){
@@ -74,6 +82,25 @@
 						for(let count = 0; count < aImageArray.length; ++count){
 							aImageArray[count].href = '#';
 							$('#newAvatarButton').attr('value', 'Выбрать новый аватар');
+							$('#newAvatarButton').css('background', 'rgba(218, 220, 108, 0.68)');
+						}
+					}
+				)
+				$('#deleteImageButton').toggle(
+					function(){
+						var aImageArray = document.getElementsByClassName('aImage');
+						for(let count = 0; count < aImageArray.length; ++count){
+							aImageArray[count].href = '?deleteImage=' + aImageArray[count].getAttribute('data-nameImage');
+							$('#deleteImageButton').attr('value', 'Отменить удаление');
+							$('#deleteImageButton').css('background', 'rgba(220, 134, 108, 0.68)');
+						}
+					}, 
+					function(){
+						var aImageArray = document.getElementsByClassName('aImage');
+						for(let count = 0; count < aImageArray.length; ++count){
+							aImageArray[count].href = '#';
+							$('#deleteImageButton').attr('value', 'Удалить фотографию');
+							$('#deleteImageButton').css('background', 'rgba(218, 220, 108, 0.68)');
 						}
 					}
 				)
@@ -90,6 +117,11 @@
 		</div>
 		<div id='window'>
 			<div id='menu'>
+				<div id='userData'>
+					<div id='windowUserImage'><img id='avatar' src='<?= autoAvatar($link, $fullUserData) ?>'></div>
+					<script> processingPhoto(<?= json_encode(processingPhoto(autoAvatar($link, $fullUserData), 175))?>, 175, 'avatar', 'cropping') </script>
+					<p id='fullNameUser'><?= "$fullUserData[name] $fullUserData[surname]" ?></p>
+				</div>
 				<?php if($itPage == 'user'){?>
 					<input type='button' class='menuButton' id='showFormLoadImage' value='Загрузить фотографию'>
 					<form method='POST' enctype='multipart/form-data' id='formLoadImage'>
@@ -97,6 +129,7 @@
 						<input type='submit' name='loadImage' value='Загрузить'>
 					</form>
 					<input type='button' class='menuButton' id='newAvatarButton' value='Выбрать новый аватар'>
+					<input type='button' class='menuButton' id='deleteImageButton' value='Удалить фотографию'>
 				<?php } ?>
 				<a href='?backward'><input type='button' class='menuButton' id='' value='Назад'></a>
 			</div>

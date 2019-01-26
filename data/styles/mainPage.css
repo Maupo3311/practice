@@ -99,7 +99,7 @@
     background: white;
 }
 .newsWindowImage{
-    overflow: none;
+    overflow: hidden;
 	margin-left: 150px;
 	margin-top: -20px;
 	background: white;

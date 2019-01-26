@@ -20,6 +20,7 @@
 	$result = mysqli_query($link, $query);
 	for($fullDataNewsesUser = []; $row = mysqli_fetch_assoc($result); $fullDataNewsesUser[] = $row);
 	$fullDataNewsesUser = array_reverse($fullDataNewsesUser);
+	$copyFullDataNewsesUser = $fullDataNewsesUser;
 	
 	if(!empty($_POST['textNewNews']) ){
 		if(!empty($_FILES['attachedFile']['name'])){
@@ -39,6 +40,7 @@
 		$url = strtok($_SERVER['REQUEST_URI'], '?');
 		header("Location: $url"); exit();
 	}
+	
 ?>
 <!DOCTYPE html>
 <html>
@@ -48,7 +50,48 @@
 		<script type="text/javascript" src="scripts/mainFunctions.js"></script>
 		<title>Practice</title>
 		<script>
+			
 			$(document).ready(function(){
+			
+				function newsUpdate(){ $.ajax({url: 'newsOutput.php',
+				data: "itPage=<?= $itPage ?>&id=<?= $id ?>&currentNewsCount="+newsCount,
+				type: 'POST',
+				success: function(result){
+					if(result == 0) return;
+					$('#testBlock').html(result)
+						
+						var arrayAvatarSender = $('[data-needAvatarSize]');
+						var arrayImageNews = $('[data-needNewsImageSize]');
+						var arrayAvatarSender = document.getElementsByClassName('avatarSender');
+						var arraySizeImageNews = <?= json_encode($arraySizeImageNews) ?>;
+						var arraySizeAvatarSender = <?= json_encode($arraySizeAvatarSender) ?>;
+						var countNewsImage = 0;
+					
+						for(let count = 0; count < arrayAvatarSender.length; ++count){
+							var strSizeCropping = arrayAvatarSender[count].getAttribute('data-needAvatarSize').replace(/^.*\[(.+)\].+\[(.+)\].*$/, '$1');
+							var strSizeStretching = arrayAvatarSender[count].getAttribute('data-needAvatarSize').replace(/^.*\[(.+)\].+\[(.+)\].*$/, '$2');
+							var arraySizeCropping = []; arraySizeCropping['cropping'] = strSizeCropping.split(',');
+							var arraySizeStretching = []; arraySizeStretching['stretching'] = strSizeStretching.split(',');
+							
+							processingPhoto(arraySizeCropping, 65, arrayAvatarSender[count].id, 'cropping');	
+						}
+						for(let count = 0; count < arrayImageNews.length; ++count){
+							var strSizeCropping = arrayImageNews[count].getAttribute('data-needNewsImageSize').replace(/^.*\[(.+)\].+\[(.+)\].*$/, '$1');
+							var strSizeStretching = arrayImageNews[count].getAttribute('data-needNewsImageSize').replace(/^.*\[(.+)\].+\[(.+)\].*$/, '$2');
+							var arraySizeCropping = []; arraySizeCropping['cropping'] = strSizeCropping.split(',');
+							var arraySizeStretching = []; arraySizeStretching['stretching'] = strSizeStretching.split(',');
+							
+							processingPhoto(arraySizeStretching, 550, arrayImageNews[count].id, 'stretching');
+						}
+						
+						newsCount = arrayAvatarSender.length;
+						pageFit('newsBlock', window.pageYOffset);
+						$("img").click(function(){ zoomImage(this, document.body) });
+					}	
+				})};
+				var newsCount = 0;
+				newsUpdate();
+				var interval = setInterval(function(){newsUpdate()}, 3000);
 				$(document).click(function(event){
 					var target = event.target;
 					if(target.id != 'shareTheNews' && target.class != 'newsButton' && target.id != 'buttonForBlockOutput' && target.getAttribute('type') != 'file'){
@@ -69,7 +112,6 @@
 					$('#fileInput').css('display', 'none');
 					$('#showFileInput').attr('value', 'Прикрепить');
 				})
-				$("img").click(function(){ zoomImage(this, document.body) });
 				pageFit('newsBlock', window.pageYOffset);
 			})
 		</script>
@@ -101,42 +143,8 @@
 					<input type='submit' name='newNews' id='sendNewNews' class='newsButton' value='Отправить'>
 					<input type='file' name='attachedFile' class='newsButton' id='fileInput'>
 				</form>
-				<?php
-					$idImage = 0;
-					foreach($fullDataNewsesUser as $news){
-						$query = "SELECT * FROM users WHERE id = '$news[idOfTheSender]'";
-						$result = mysqli_query($link, $query);
-						for($dataOfTheSender = []; $row = mysqli_fetch_assoc($result); $dataOfTheSender = $row);
-						$avatarPutch = autoAvatar($link, $dataOfTheSender);
-						
-						$idImageNews = 'imageNews'.$idImage;
-						$idavatarSender = 'avatarSender'.$idImage;
-						
-						$result = '';
-						$result .= "<div class='newsBlock'>";
-						$result .= "<form method='POST' class='settingUpNews'>";
-						if($itPage == 'user' || $news['idOfTheSender'] == $_COOKIE['userId']){ 
-							$result .= "<button type='submit' class='deleteNews' name='deleteNews' value='$news[id]'>X</button>";
-						}
-						$result .= "</form>";
-						$result .= "<div class='theDataSender'>
-							<div class='windowAvatarSender'><img id='$idavatarSender' src='$avatarPutch'></div>
-							<p class='theFullNameSender'>$dataOfTheSender[name] $dataOfTheSender[surname]</p>
-						</div>";
-						if(!empty($news['text'])) $result .= "<p class='newsText'>$news[text]</p>";
-						if(!empty($news['attachedFile'])){ $result .= "<div class='newsWindowImage'>
-							<img id='$idImageNews' src='data/userImages/$news[userId]/userNewsImages/$news[attachedFile]' class='newsImage'>
-						</div>";
-						}
-						$result .= "</div>";
-						echo $result;
-						?> <script> <?php if(!empty($news['attachedFile'])){ ?>
-						processingPhoto(<?= json_encode(processingPhoto("data/userImages/$news[userId]/userNewsImages/$news[attachedFile]", 550))?>, 550, '<?= $idImageNews ?>', 'stretching'); <?php } ?>
-						processingPhoto(<?= json_encode(processingPhoto($avatarPutch, 65))?>, 65, '<?= $idavatarSender ?>', 'cropping');
-						</script> <?php
-						$idImage++;
-					}
-				?>
+				<div id='testBlock'></div>
+				
 			</div>
 		</div>
 	</body>
