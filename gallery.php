@@ -125,7 +125,7 @@
 				<?php if($itPage == 'user'){?>
 					<input type='button' class='menuButton' id='showFormLoadImage' value='Загрузить фотографию'>
 					<form method='POST' enctype='multipart/form-data' id='formLoadImage'>
-						<input type='file' name='newImage'>
+						<input type='file' name='newImage' accept='image/*'>
 						<input type='submit' name='loadImage' value='Загрузить'>
 					</form>
 					<input type='button' class='menuButton' id='newAvatarButton' value='Выбрать новый аватар'>

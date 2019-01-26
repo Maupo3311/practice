@@ -1,7 +1,7 @@
 function processingPhoto(imageSize, divSize, imageId, method, imageClass = undefined){
 	
-	var width = imageSize[method][0];
-	var height = imageSize[method][1];
+	var width = +imageSize[method][0];
+	var height = +imageSize[method][1];
 	var image = document.getElementById(imageId);
 	
 	if(method == 'cropping'){
@@ -33,8 +33,11 @@ function pageFit(elemClass, currentScroll, minus = 30){
 }
 
 function zoomImage(image, body){
+	
 	if(image.parentNode.href != undefined && image.parentNode.href.slice(-1) != '#' && image.parentNode.href != '') return;
 	if(image.getAttribute('class') == 'avatarSender') return;
+	
+	
 	$('#upperBand').css('display', 'none');
 	var imageHeight = image.offsetHeight;
 	var imageWidth = image.offsetWidth;
@@ -142,7 +145,7 @@ function closeWindowZoomImage(event ,div){
 			image.style.margin = '0 ' + (windowZoomImage.offsetWidth - image.offsetWidth) / 2 + 'px';
 		}
 	}
-	$('#upperBand').css('display', 'block');
+	if(target.id == 'closeWindowZoomImage') $('#upperBand').css('display', 'block');
 	if(target == div) div.remove();
 }
 

@@ -82,8 +82,10 @@
 }
 #fileInput{
 	display: none;
-	width: 715px;
+	width: 450px;
 	height: 20px;
+	margin-top: -18px;
+	margin-left: 10px;
 }
 .newsBlock{
 	background: url(../images/depositphotos_77853788-stock-photo-yellow-delicate-satin-background-with.jpg);

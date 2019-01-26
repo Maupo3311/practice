@@ -72,7 +72,6 @@
 							var strSizeStretching = arrayAvatarSender[count].getAttribute('data-needAvatarSize').replace(/^.*\[(.+)\].+\[(.+)\].*$/, '$2');
 							var arraySizeCropping = []; arraySizeCropping['cropping'] = strSizeCropping.split(',');
 							var arraySizeStretching = []; arraySizeStretching['stretching'] = strSizeStretching.split(',');
-							
 							processingPhoto(arraySizeCropping, 65, arrayAvatarSender[count].id, 'cropping');	
 						}
 						for(let count = 0; count < arrayImageNews.length; ++count){
