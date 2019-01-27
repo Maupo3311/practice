@@ -32,11 +32,11 @@ function pageFit(elemClass, currentScroll, minus = 30){
 	}
 }
 
-function zoomImage(image, body){
+function zoomImage(image, body, obj){
 	
 	if(image.parentNode.href != undefined && image.parentNode.href.slice(-1) != '#' && image.parentNode.href != '') return;
-	if(image.getAttribute('class') == 'avatarSender') return;
-	
+	if(image.getAttribute('class') == 'avatarSender' || image.getAttribute('id') == 'avatarUserInUpperBand') return;
+
 	
 	$('#upperBand').css('display', 'none');
 	var imageHeight = image.offsetHeight;
@@ -48,7 +48,7 @@ function zoomImage(image, body){
 	closeWindowZoomImage.style.width = '100%';
 	closeWindowZoomImage.style.height = '100%';
 	body.appendChild(closeWindowZoomImage);
-	closeWindowZoomImage.setAttribute('onclick', 'closeWindowZoomImage(event ,this)');
+	closeWindowZoomImage.setAttribute('onclick', 'closeWindowZoomImage(event ,this, ' + obj + ')');
 	
 	var windowZoomImage = document.createElement('div');
 	windowZoomImage.id = 'windowZoomImage';
@@ -109,7 +109,8 @@ function zoomImage(image, body){
 	zoomImage.style.margin = zoomImageMarginTop + zoomImageMarginLeft;
 	
 }
-function closeWindowZoomImage(event ,div){
+function closeWindowZoomImage(event ,div, obj){
+	
 	var target = event.target;
 	if(target.className == 'arrow'){
 		var image = target.parentNode.lastChild;
@@ -146,8 +147,35 @@ function closeWindowZoomImage(event ,div){
 		}
 	}
 	if(target.id == 'closeWindowZoomImage') $('#upperBand').css('display', 'block');
-	if(target == div) div.remove();
+	if(target == div){ div.remove(); }
 }
+
+
+function windowControll(){
+	var lastSizeWidthClientWindow = document.documentElement.clientWidth;
+	var lastSizeHeightClientWindow = document.documentElement.clientHeight;
+	var intervalZoomImageUpdate = setInterval(function(){
+		if(lastSizeWidthClientWindow != document.documentElement.clientWidth || lastSizeHeightClientWindow != document.documentElement.clientHeight){
+			var closeWindowZoomImage = $('#closeWindowZoomImage');
+			if(closeWindowZoomImage == undefined) return;
+			lastSizeWidthClientWindow = document.documentElement.clientWidth;
+			lastSizeHeightClientWindow = document.documentElement.clientHeight;
+			closeWindowZoomImage.remove();
+		}
+	}, 500);
+}
+
+function menuInUpperBandOpenClose(){
+	if($('#menuInUpperBand').attr('data-checkMenu') == 'closed'){
+		$('#menuInUpperBand').show('highlight', 500);
+		$('#menuInUpperBand').attr('data-checkMenu', 'opened');
+	} else {
+		$('#menuInUpperBand').hide('highlight', 500);
+		$('#menuInUpperBand').attr('data-checkMenu', 'closed');
+	}
+}
+
+
 
 
 

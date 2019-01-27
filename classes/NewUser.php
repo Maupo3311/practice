@@ -2,6 +2,7 @@
 	class NewUser{
 		private $errors = [];
 		
+		public $userData;
 		private $login;
 		private $password;
 		private $confirm;
@@ -12,14 +13,18 @@
 		private $sex;
 		private $registrationDate;
 		
-		public function setLogin($login){
+		public function setLogin($login, $currentLogin = null){
+			if($login == 'undefined') return;
+			
 			$link = mysqli_connect('practice.local', 'mysql', 'mysql', 'server');
 			mysqli_query($link, "SET NAMES = 'UTF8'");
 			$query = "SELECT login FROM users WHERE login = '$login'";
 			$result = mysqli_query($link, $query);
 			for($coincidence = []; $row = mysqli_fetch_assoc($result); $coincidence[] = $row);
 			
-			if(strlen($login) == 0){
+			if($currentLogin != null && $this->userData['login'] != $currentLogin){
+				$this->errors['login'] = '◒ Неверный текущий логин';
+			} else if(strlen($login) == 0){
 				$this->errors['login'] = '◒ Поле с логином пусто';
 			} else if(!empty($coincidence)){
 				$this->errors['login'] = '◒ Логин занят';
@@ -31,8 +36,12 @@
 				$this->login = $login;
 			}
 		}
-		public function setPassword($password, $confirm){
-			if(strlen($password) == 0){
+		public function setPassword($password, $confirm, $currentPassword = null){
+			if($password == 'undefined' && $confirm == 'undefined') return;
+			
+			if($currentPassword != null && $this->userData['password'] != md5($currentPassword)){
+				$this->errors['password'] = '◒ Неверный текущий пароль'; 
+			} else if(strlen($password) == 0){
 				$this->errors['password'] = '◒ Поле с паролем пусто'; 
 			} else if(preg_match('#[А-Яа-я-]#', $password)){
 				$this->errors['password'] = '◒ Пароль содержит недопустимые символы';				
@@ -47,6 +56,8 @@
 			}
 		}
 		public function setName($name){
+			if($name == 'undefined') return;
+			
 			if(strlen($name) == 0){
 				$this->errors['name'] = '◒ Поле с именем пусто';
 			} else if(preg_match('#[\d]#', $name)){
@@ -56,6 +67,8 @@
 			}
 		}
 		public function setSurname($surname){
+			if($surname == 'undefined') return;
+			
 			if(strlen($surname) == 0){
 				$this->errors['surname'] = '◒ Поле с фамилией пусто';
 			} else if(preg_match('#[\d]#', $surname)){
@@ -65,19 +78,23 @@
 			}
 		}
 		public function setAge($age){
+			if($age == 'undefined') return;
+			
 			if(strlen($age) == 0){
 				$this->errors['age'] = '◒ Поле с возрастом пусто';
-			} else if(preg_match('#^[\d]+$#', $age) && $age > 12 && $age < 99){
+			} else if(preg_match('#^[\d]+$#', $age) && $age > 7 && $age < 99){
 				$this->age = $age;
 			} else {
 				$this->errors['age'] = '◒ Некорректный возраст';
 			}
 		}
 		public function setCity($city){
+			if($city == 'undefined') return;
+			
 			if(strlen($city) == 0){
 				$this->errors['city'] = '◒ Поле с городом пусто';
 			} else if(preg_match('#[\d]#', $city)){
-				$this->errors['sity'] = '◒ Город содержит недопустимые символы';
+				$this->errors['city'] = '◒ Город содержит недопустимые символы';
 			} else {
 				$this->city = $city;
 			}
@@ -118,7 +135,7 @@
 			return [$this->login, $this->password, $this->confirm, $this->name, $this->surname, $this->age, $this->city, $this->sex, $this->registrationDate];
 		}
 		
-		public function __construct($login, $password, $confirm, $name, $surname, $age, $city, $sex, $registrationDate){
+		public function __construct($login='undefined', $password='undefined', $confirm='undefined', $name='undefined', $surname='undefined', $age='undefined', $city='undefined', $sex='undefined', $registrationDate='undefined'){
 			$this->setLogin($login);
 			$this->setPassword($password, $confirm);
 			$this->setName($name);

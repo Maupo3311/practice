@@ -1,0 +1,30 @@
+#settingWindow{
+    width: 680px;
+    position: absolute;
+    margin: -270px 300px;
+}
+.p{
+    text-align: right;
+    width: 500px;
+}
+input{
+    outline: none;
+}
+.inputTextUpdate{
+    background: rgba(236, 231, 166, 0.38);
+    padding: 2px 10px;
+}
+.submitInputUpdate:hover{
+    cursor: pointer;
+    background: rgba(236, 231, 166, 0.7);
+}
+.submitInputUpdate{
+    width: 250px;
+    border-radius: 2px;
+    background: rgba(236, 231, 166, 0.38);
+}
+#errorAlert{
+    font-size: 20px;
+    text-align: center;
+	color: red;
+}

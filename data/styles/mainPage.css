@@ -178,16 +178,3 @@
 }
 
 
-.aButton{
-    text-decoration: none;
-}
-#exitButton:hover{
-    background: rgba(243, 245, 124, 0.48);
-}
-#exitButton{
-    margin: 9px 410px;
-    position: absolute;
-    height: 20px;
-    width: 100px;
-    border-radius: 20px;
-}

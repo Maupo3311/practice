@@ -5,6 +5,10 @@
 	
 	include 'scripts/mainFunction.php';
 	
+	$query = "SELECT * FROM users WHERE id = '$_COOKIE[userId]'";
+	$result = mysqli_query($link, $query);
+	for($fullDataMainUser = []; $row = mysqli_fetch_assoc($result); $fullDataMainUser = $row);
+	
 	if(isset($_GET['exit'])){
 		$_SESSION['page'] = '';
 		setcookie('userId', 0, time());
@@ -24,6 +28,8 @@
 		$_SESSION['page'] = 'gallery';
 	} else if(isset($_GET['friends'])){
 		$_SESSION['page'] = 'friends';
+	} else if(isset($_GET['setting'])) {
+		$_SESSION['page'] = 'setting';
 	}
 	
 	$globalArray['mainHtmlHead'] = 
@@ -32,8 +38,9 @@
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 		<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
 		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>';
-	 
-	if($_SESSION['page'] == 'friends'){
+	if($_SESSION['page'] == 'setting'){
+		include 'setting.php';
+	} else if($_SESSION['page'] == 'friends'){
 		include 'friends.php';
 	} else if($_SESSION['page'] == 'registration'){
 		include 'registration.php';

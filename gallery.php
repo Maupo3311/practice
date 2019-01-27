@@ -106,13 +106,25 @@
 				)
 				$("img").click(function(){ zoomImage(this, document.body) }); 
 				pageFit('miniImageWindow', window.pageYOffset);
+				windowControll();
 			})
 		</script>
 	</head>
 	<body>
 		<div id='upperBand'>
 			<div id='mainDivUpperBand'>
-				<a href='?exit' class='aButton' id='exitButton'>Выйти</a>
+				<div id='userDataInUpperBand' onclick='menuInUpperBandOpenClose()'>
+					<p id='userNameInUpperBand'><?= $fullDataMainUser['name'] ?></p>
+					<div id='windowAvatarUserInUpperBand'>
+						<img id='avatarUserInUpperBand' src='<?= autoAvatar($link, $fullDataMainUser) ?>'>
+						<script> processingPhoto(<?= json_encode(processingPhoto(autoAvatar($link, $fullDataMainUser), 37))?>, 37, 'avatarUserInUpperBand', 'cropping') </script>
+					</div>
+					<div id='menuInUpperBand' data-checkMenu='closed'>
+						<a href='?setting' class='aButton menuInUpperBandButton' id='settingButton'><p>Настройки</p></a>
+						<a href='?exit' class='aButton menuInUpperBandButton' id='exitButton'><p>Выйти</p></a>
+					</div>
+				</div>
+				
 			</div>
 		</div>
 		<div id='window'>

@@ -11,7 +11,6 @@
 		$itPage = 'user';
 	}
 	
-	
 	$query = "SELECT * FROM users WHERE id = '$id'";
 	$result = mysqli_query($link, $query);
 	for($fullDataUser = []; $row = mysqli_fetch_assoc($result); $fullDataUser = $row);
@@ -53,7 +52,10 @@
 			
 			$(document).ready(function(){
 			
-				function newsUpdate(){ $.ajax({url: 'newsOutput.php',
+			
+			
+				function newsUpdate(){ $.ajax({
+				url: 'newsOutput.php',
 				data: "itPage=<?= $itPage ?>&id=<?= $id ?>&currentNewsCount="+newsCount,
 				type: 'POST',
 				success: function(result){
@@ -85,12 +87,16 @@
 						
 						newsCount = arrayAvatarSender.length;
 						pageFit('newsBlock', window.pageYOffset);
-						$("img").click(function(){ zoomImage(this, document.body) });
+						$("img").click(function(){ zoomImage(this, document.body); });
 					}	
 				})};
+				
+				
 				var newsCount = 0;
 				newsUpdate();
-				var interval = setInterval(function(){newsUpdate()}, 3000);
+				var intervalNewsUpdate = setInterval(function(){newsUpdate()}, 3000);
+				
+				
 				$(document).click(function(event){
 					var target = event.target;
 					if(target.id != 'shareTheNews' && target.class != 'newsButton' && target.id != 'buttonForBlockOutput' && target.getAttribute('type') != 'file'){
@@ -112,13 +118,25 @@
 					$('#showFileInput').attr('value', 'Прикрепить');
 				})
 				pageFit('newsBlock', window.pageYOffset);
+				windowControll();
 			})
 		</script>
 	</head>
 	<body>
 		<div id='upperBand'>
 			<div id='mainDivUpperBand'>
-				<a href='?exit' class='aButton' id='exitButton'>Выйти</a>
+				<div id='userDataInUpperBand' onclick='menuInUpperBandOpenClose()'>
+					<p id='userNameInUpperBand'><?= $fullDataMainUser['name'] ?></p>
+					<div id='windowAvatarUserInUpperBand'>
+						<img id='avatarUserInUpperBand' src='<?= autoAvatar($link, $fullDataMainUser) ?>'>
+						<script> processingPhoto(<?= json_encode(processingPhoto(autoAvatar($link, $fullDataMainUser), 37))?>, 37, 'avatarUserInUpperBand', 'cropping') </script>
+					</div>
+					<div id='menuInUpperBand' data-checkMenu='closed'>
+						<a href='?setting' class='aButton menuInUpperBandButton' id='settingButton'><p>Настройки</p></a>
+						<a href='?exit' class='aButton menuInUpperBandButton' id='exitButton'><p>Выйти</p></a>
+					</div>
+				</div>
+				
 			</div>
 		</div>
 		<div id='window'>

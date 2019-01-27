@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<!-- saved from url=(0030)http://practice.local/?gallery -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<link href="./Изображения_files/basicStyle.css" rel="stylesheet">
+		<script type="text/javascript" src="./Изображения_files/jquery.min.js.Без названия"></script>
+		<link href="./Изображения_files/jquery-ui.css" rel="stylesheet" type="text/css">
+		<script src="./Изображения_files/jquery-ui.min.js.Без названия"></script>		<link href="./Изображения_files/gallery.css" rel="stylesheet">
+		<script src="./Изображения_files/mainFunctions.js.Без названия"></script>
+		<title>Изображения</title>
+		<script>
+			$(document).ready(function(){
+				var idOfTheCurrentElement;
+				$('#showFormLoadImage').toggle(function(){
+					$('#showFormLoadImage').attr('value', 'Отменить загрузку');
+					$('#formLoadImage').css('display', 'block');}, function(){
+					$('#showFormLoadImage').attr('value', 'Загрузить фотографию');
+					$('#formLoadImage').css('display', 'none');
+				})
+				$('#newAvatarButton').toggle(
+					function(){
+						var aImageArray = document.getElementsByClassName('aImage');
+						for(let count = 0; count < aImageArray.length; ++count){
+							aImageArray[count].href = '?newAvatar=' + aImageArray[count].getAttribute('data-nameImage');
+							$('#newAvatarButton').attr('value', 'Отменить выбор аватара');
+							$('#newAvatarButton').css('background', 'rgba(206, 221, 247, 0.89)');
+						}
+					}, 
+					function(){
+						var aImageArray = document.getElementsByClassName('aImage');
+						for(let count = 0; count < aImageArray.length; ++count){
+							aImageArray[count].href = '#';
+							$('#newAvatarButton').attr('value', 'Выбрать новый аватар');
+							$('#newAvatarButton').css('background', 'rgba(218, 220, 108, 0.68)');
+						}
+					}
+				)
+				$('#deleteImageButton').toggle(
+					function(){
+						var aImageArray = document.getElementsByClassName('aImage');
+						for(let count = 0; count < aImageArray.length; ++count){
+							aImageArray[count].href = '?deleteImage=' + aImageArray[count].getAttribute('data-nameImage');
+							$('#deleteImageButton').attr('value', 'Отменить удаление');
+							$('#deleteImageButton').css('background', 'rgba(220, 134, 108, 0.68)');
+						}
+					}, 
+					function(){
+						var aImageArray = document.getElementsByClassName('aImage');
+						for(let count = 0; count < aImageArray.length; ++count){
+							aImageArray[count].href = '#';
+							$('#deleteImageButton').attr('value', 'Удалить фотографию');
+							$('#deleteImageButton').css('background', 'rgba(218, 220, 108, 0.68)');
+						}
+					}
+				)
+				$("img").click(function(){ zoomImage(this, document.body) }); 
+				pageFit('miniImageWindow', window.pageYOffset);
+				windowControll();
+			})
+		</script>
+	</head>
+	<body>
+		<div id="upperBand" style="display: none;">
+			<div id="mainDivUpperBand">
+				<div id="userDataInUpperBand" onclick="menuInUpperBandOpenClose()">
+					<p id="userNameInUpperBand">Сергей</p>
+					<div id="windowAvatarUserInUpperBand">
+						<img id="avatarUserInUpperBand" src="./Изображения_files/K4e4hl1VmwE.jpg" style="margin: 0px -14.6173px; width: 66.2346px; height: 37px;">
+						<script> processingPhoto({"cropping":[66.234567901235,37],"stretching":[37,20.668965517241]}, 37, 'avatarUserInUpperBand', 'cropping') </script>
+					</div>
+					<div id="menuInUpperBand" data-checkmenu="closed">
+						<a href="http://practice.local/?setting" class="aButton menuInUpperBandButton" id="settingButton"><p>Настройки</p></a>
+						<a href="http://practice.local/?exit" class="aButton menuInUpperBandButton" id="exitButton"><p>Выйти</p></a>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		<div id="window">
+			<div id="menu">
+				<div id="userData">
+					<div id="windowUserImage"><img id="avatar" src="./Изображения_files/1488942578302_7.jpg" style="margin: 0px; width: 175px; height: 233.333px;"></div>
+					<script> processingPhoto({"cropping":[175,233.33333333333],"stretching":[131.25,175]}, 175, 'avatar', 'cropping') </script>
+					<p id="fullNameUser">marina kolodeznaya</p>
+				</div>
+								<a href="http://practice.local/?backward"><input type="button" class="menuButton" id="" value="Назад"></a>
+			</div>
+			<div id="imageWindow">
+				<div class="miniImageWindow">
+							<a class="aImage" data-nameimage="1488942578302_7.jpg"><img class="miniImage" src="./Изображения_files/1488942578302_7.jpg" id="0" style="margin: 0px; width: 200px; height: 266.667px;"></a>
+						</div> 
+					<script>
+							processingPhoto({"cropping":[200,266.66666666667],"stretching":[150,200]}, 200, 0, 'cropping');
+					</script>
+				<div class="miniImageWindow">
+							<a class="aImage" data-nameimage="1488942608540_8.jpg"><img class="miniImage" src="./Изображения_files/1488942608540_8.jpg" id="1" style="margin: 0px; width: 200px; height: 266.667px;"></a>
+						</div> 
+					<script>
+							processingPhoto({"cropping":[200,266.66666666667],"stretching":[150,200]}, 200, 1, 'cropping');
+					</script>
+				<div class="miniImageWindow">
+							<a class="aImage" data-nameimage="1488947732572_4.jpg"><img class="miniImage" src="./Изображения_files/1488947732572_4.jpg" id="2" style="margin: 0px; width: 200px; height: 266.667px;"></a>
+						</div> 
+					<script>
+							processingPhoto({"cropping":[200,266.66666666667],"stretching":[150,200]}, 200, 2, 'cropping');
+					</script>
+				<div class="miniImageWindow">
+							<a class="aImage" data-nameimage="1489027384927_1 (1).jpg"><img class="miniImage" src="./Изображения_files/1489027384927_1 (1).jpg" id="3" style="margin: 0px; width: 200px; height: 266.667px;"></a>
+						</div> 
+					<script>
+							processingPhoto({"cropping":[200,266.66666666667],"stretching":[150,200]}, 200, 3, 'cropping');
+					</script>
+				<div class="miniImageWindow">
+							<a class="aImage" data-nameimage="1502802154690_233.jpg"><img class="miniImage" src="./Изображения_files/1502802154690_233.jpg" id="4" style="margin: 0px -33.3333px; width: 266.667px; height: 200px;"></a>
+						</div> 
+					<script>
+							processingPhoto({"cropping":[266.66666666667,200],"stretching":[200,150]}, 200, 4, 'cropping');
+					</script>
+				<div class="miniImageWindow">
+							<a class="aImage" data-nameimage="1502802261020_253.jpg"><img class="miniImage" src="./Изображения_files/1502802261020_253.jpg" id="5" style="margin: 0px -33.3333px; width: 266.667px; height: 200px;"></a>
+						</div> 
+					<script>
+							processingPhoto({"cropping":[266.66666666667,200],"stretching":[200,150]}, 200, 5, 'cropping');
+					</script>
+				<div class="miniImageWindow">
+							<a class="aImage" data-nameimage="1502802302617_260.jpg"><img class="miniImage" src="./Изображения_files/1502802302617_260.jpg" id="6" style="margin: 0px -33.3333px; width: 266.667px; height: 200px;"></a>
+						</div> 
+					<script>
+							processingPhoto({"cropping":[266.66666666667,200],"stretching":[200,150]}, 200, 6, 'cropping');
+					</script>
+				<div class="miniImageWindow">
+							<a class="aImage" data-nameimage="1502802352785_269.jpg"><img class="miniImage" src="./Изображения_files/1502802352785_269.jpg" id="7" style="margin: 0px -33.3333px; width: 266.667px; height: 200px;"></a>
+						</div> 
+					<script>
+							processingPhoto({"cropping":[266.66666666667,200],"stretching":[200,150]}, 200, 7, 'cropping');
+					</script>
+				<div class="miniImageWindow">
+							<a class="aImage" data-nameimage="1502802370296_273.jpg"><img class="miniImage" src="./Изображения_files/1502802370296_273.jpg" id="8" style="margin: 0px -33.3333px; width: 266.667px; height: 200px;"></a>
+						</div> 
+					<script>
+							processingPhoto({"cropping":[266.66666666667,200],"stretching":[200,150]}, 200, 8, 'cropping');
+					</script>
+							</div>
+		</div>
+	
+		
+		
+		</body></html>

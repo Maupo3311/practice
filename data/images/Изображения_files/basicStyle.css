@@ -1,0 +1,97 @@
+body{
+	background: url(../images/17599833.jpg)
+}
+
+
+#upperBand {
+	width: 100%;
+	text-align: center;
+	background: rgba(235, 233, 205, 0.94);
+	height: 37px;
+	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: 9998;
+	border: 1px solid black;
+}
+#upperBand #mainDivUpperBand{
+	width: 1000px;
+	height: 40px;
+	margin: 0 auto;
+}
+.menuInUpperBandButton p:hover{
+	background: #f1eba5;
+}
+.menuInUpperBandButton p{
+	margin: 0px 0;
+   height: 20px;
+   border: 0.3px solid black;
+}
+#userDataInUpperBand{
+	position: absolute;
+	height: 37px;
+	margin: 0 850px;
+	width: 150px;
+	cursor: pointer;
+}
+#userNameInUpperBand{
+	margin: 9px 0;
+	text-align: right;
+	padding-right: 40px;
+}
+#windowAvatarUserInUpperBand{
+	width: 37px;
+	height: 37px;
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	border-radius: 100px;
+	overflow: hidden;
+}
+#menuInUpperBand{
+	display: none;
+	width: 140px;
+	border: 1px solid black;
+	background: rgb(243, 242, 239);
+	position: absolute;
+	margin: 5px 0;
+	border-radius: 5px;
+	overflow: hidden;
+}
+
+
+#window {
+	margin: 50px auto;
+	width: 1000px;
+	height: 900px;
+	border: 3px solid rgba(162, 162, 56, 0.69);
+	background: #e4e2e2;
+	border-radius: 2px;
+}
+
+
+.aButton:hover{
+    background: rgba(243, 245, 124, 0.48);
+}
+.aButton{
+    text-decoration: none;
+	color: black;
+}
+#windowZoomImage{
+	border: 10px solid #757575;
+	background: #757575;
+	z-index: 9999;
+	position: fixed;
+}
+#closeWindowZoomImage:hover{
+	cursor: pointer;
+}
+#closeWindowZoomImage{
+	background: rgba(0, 0, 0, 0.6);
+	position: fixed;
+	left: 0;
+	top: 0;
+}
+.arrow{
+	position: absolute;
+}
